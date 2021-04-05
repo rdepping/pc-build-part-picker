@@ -36,11 +36,14 @@ def main():
 
         reset_selected_parts(original_parts)
         selected_parts = select_parts_based_on(original_parts, 'experience_score')
-        print_results('Maximum Experience Score', selected_parts)
+        print_results('Maximum Experience Score Pick', selected_parts)
 
-        selected_parts = get_in_budget(original_parts, args.budget, args.sort)
+        selected_parts = select_for_budget(original_parts, args.budget, args.sort)
 
-        print_results('Selected Parts', selected_parts)
+        if selected_parts is not None:
+            print_results('Selected Parts', selected_parts)
+        else:
+            print(f'Failed to find parts in budget {args.budget}')
 
         sys.exit(0)
     except Exception as e:
@@ -53,51 +56,63 @@ def reset_selected_parts(original_parts):
 
 
 def print_results(use_case, selected_parts):
+    print('\n\n')
     print('#' * 10 + f' {use_case} ' + '#' * 10)
     print(f'Picked Parts \n{selected_parts}')
-    print('#' * 30)
+    print('#' * 40)
     print(f"Total Cost: €{selected_parts['cost'].sum():0,.2f}")
-    print(f"Total Experience Score: {selected_parts['experience_score'].sum()}\n")
+    print(f"Total Experience Score: {selected_parts['experience_score'].sum()}")
+    print('#' * 40)
+    print('\n\n')
 
 
-def get_in_budget(original_parts, budget, sort='experience_score'):
-    original_parts.sort_values(by=['selected', 'experience_score'], ascending=[False, True], inplace=True, ignore_index=True)
+def select_for_budget(original_parts, budget, sort='experience_score'):
+    original_parts.sort_values(by=['selected', sort], ascending=[False, True], inplace=True,
+                               ignore_index=True)
     if in_budget(original_parts, budget):
         return original_parts.loc[original_parts['selected'] == True]
-    attempts = 0
+    category_idx = 0
     in_budget_flag = False
-    while not in_budget_flag and attempts < 6: # 6 categories
-        selected_parts = original_parts.loc[original_parts['selected'] == True]
-        category = selected_parts.at[attempts, 'category']
-        not_selected_df = original_parts[(original_parts['selected'] == False) & (original_parts['category'] == category)].sort_values(by=['experience_score'], ascending=False)
-        selected_parts.at[attempts, 'selected'] = False
-        deselected_part = original_parts.at[attempts, 'name']
-        print('#' * 30)
-        print(f"Attempt: {attempts} for Category: {category}")
-        for index, row in not_selected_df.iterrows():
-            print(f"\t- Removing {deselected_part} adding {original_parts.loc[index]['name']}")
+    selected_parts = original_parts.loc[original_parts['selected'] == True]
+    while not in_budget_flag and category_idx < 6:  # 6 categories
+        category = selected_parts.at[category_idx, 'category']
+        not_selected_parts = get_alternative_parts(category, original_parts)
+        deselected_part = selected_parts.at[category_idx, 'name']
+        selected_parts = selected_parts.drop(category_idx)
+        prev_not_selected_idx = None
+        for not_selected_parts_idx, row in not_selected_parts.iterrows():
+            if prev_not_selected_idx:
+                selected_parts = selected_parts.drop(prev_not_selected_idx) # We are trying again, so drop the last selected
+            prev_not_selected_idx = not_selected_parts_idx
+            print('#' * 40)
+            print(f"Category Part Swap: {category}")
+            print(f"\t- Removing: {deselected_part}")
+            print(f"\t- Adding: {not_selected_parts.loc[not_selected_parts_idx]['name']}")
             selected_parts = selected_parts.append(row)
-            selected_parts.at[index, 'selected'] = True
+            selected_parts.at[not_selected_parts_idx, 'selected'] = True
             if in_budget(selected_parts, budget):
-                in_budget_flag = True
-                break
-            else:
-                selected_parts = selected_parts.drop(index)
-        print('#' * 30)
-        attempts += 1
-    return selected_parts.loc[selected_parts['selected'] == True]
+                return selected_parts.loc[selected_parts['selected'] == True]
+            # print('#' * 40)
+        category_idx += 1
+    return None
+
+
+def get_alternative_parts(category, original_parts):
+    return original_parts[
+        (original_parts['selected'] == False) & (original_parts['category'] == category)].sort_values(
+        by=['experience_score'], ascending=False)
 
 
 def in_budget(parts, budget):
     selected_parts = parts.loc[parts['selected'] == True]
-    print_results("Budget Match Attempt", selected_parts)
+    # print_results("Budget Match Attempt", selected_parts)
     cost = selected_parts['cost'].sum()
     if cost > budget:
         print(f'Cost: €{cost} > Budget: €{budget}')
         return False
     else:
         print(f'Cost: €{cost} within budget: €{budget}')
-        print_results("Within Budget Pick", selected_parts)
+        # print_results("Within Budget Pick", selected_parts)
         return True
 
 
