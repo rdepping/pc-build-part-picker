@@ -1,0 +1,19 @@
+category,name,cost,experience_score
+case,base case 1,30,3
+case,mid case 2,50,6
+case,high-end case 3,75,8
+motherboard,base mb 1,50,5
+motherboard,mid mb 2,75,8
+motherboard,high-end mb 3,120,12
+cpu,base cpu 1,150,12
+cpu,mid cpu 2,200,20
+cpu,high-end cpu 3,300,30
+graphics,base graphics 1,80,8
+graphics,mid graphics 2,120,12
+graphics,high-end graphics 3,200,16
+storage,base storage 1,40,5
+storage,mid storage 2,80,7
+storage,high-end storage 3,120,9
+memory,base memory 1,100,8
+memory,mid memory 2,150,12
+memory,high-end memory 3,200,14
