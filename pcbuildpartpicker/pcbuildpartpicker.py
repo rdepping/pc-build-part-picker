@@ -10,7 +10,7 @@ def get_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--parts-file', type=str, help='json file containg parts to pick from')
     parser.add_argument('-b', '--budget', type=int, help='budget in euros')
-    parser.add_argument('-s', '--sort', type=str, help='sort by', default='cost')
+    parser.add_argument('-s', '--sort', type=str, help='sort by', default='exp/cost')
     args = parser.parse_args()
 
     return args
@@ -24,26 +24,27 @@ def load_data_from_csv(parts_file: str):
 def main():
     args = get_args()
     print(f'Budget €{args.budget:0,.2f}\n')
+    summary_printer = part_picker_summary_print(args.budget)
     try:
         original_parts = load_data_from_csv(args.parts_file)
         print(f'Parts to pick from \n{original_parts}')
 
-        # add_exp_score_by_cost_to(original_parts)
-        # print(f'Parts with experience score by cost \n{original_parts}')
+        add_exp_score_by_cost_to(original_parts)
+        print(f'Parts with experience score by cost \n{original_parts}')
 
-        # selected_parts = select_parts_based_on(original_parts, 'exp/cost')
-        # print_results('Best Value', selected_parts)
+        selected_parts = select_parts_based_on(original_parts, 'exp/cost')
+        summary_printer('Best Value', selected_parts)
 
         reset_selected_parts(original_parts)
         selected_parts = select_parts_based_on(original_parts, 'experience_score')
-        print_results('Maximum Experience Score Pick', selected_parts)
+        summary_printer('Maximum Experience Score Pick', selected_parts)
 
         selected_parts = select_for_budget(original_parts, args.budget, args.sort)
 
-        if selected_parts is not None:
-            print_results('Selected Parts', selected_parts)
-        else:
+        if selected_parts is None:
             print(f'Failed to find parts in budget {args.budget}')
+        else:
+            summary_printer('Selected Parts', selected_parts)
 
         sys.exit(0)
     except Exception as e:
@@ -51,22 +52,27 @@ def main():
         sys.exit(1)
 
 
-def reset_selected_parts(original_parts):
-    original_parts.loc[:, 'selected'] = False
+def reset_selected_parts(parts):
+    parts.loc[:, 'selected'] = False
 
 
-def print_results(use_case, selected_parts):
-    print('\n\n')
-    print('#' * 10 + f' {use_case} ' + '#' * 10)
-    print(f'Picked Parts \n{selected_parts}')
-    print('#' * 40)
-    print(f"Total Cost: €{selected_parts['cost'].sum():0,.2f}")
-    print(f"Total Experience Score: {selected_parts['experience_score'].sum()}")
-    print('#' * 40)
-    print('\n\n')
+def part_picker_summary_print(budget):
+    def print_part_picker_summary(use_case, selected_parts):
+        print('\n\n')
+        print('#' * 10 + f' {use_case} ' + '#' * 10)
+        print(f'{selected_parts}')
+        print('#' * 40)
+        print(f"Total Budget: €{budget:0,.2f}")
+        costs = selected_parts['cost'].sum()
+        print(f"Total Cost: €{costs :0,.2f}")
+        print(f"Remaining Budget: €{budget-costs:0,.2f}")
+        print(f"Total Experience Score: {selected_parts['experience_score'].sum()}")
+        print('#' * 40)
+        print('\n\n')
+    return print_part_picker_summary
 
 
-def select_for_budget(original_parts, budget, sort='experience_score'):
+def select_for_budget(original_parts, budget, sort):
     original_parts.sort_values(by=['selected', sort], ascending=[False, True], inplace=True,
                                ignore_index=True)
     if in_budget(original_parts, budget):
@@ -129,7 +135,6 @@ def select_parts_based_on(parts, sort_by):
 def add_exp_score_by_cost_to(parts):
     parts['selected'] = False
     parts['exp/cost'] = parts['experience_score'] / parts['cost']
-    print(f'Parts sorted by exp/cost\n {parts}')
 
 
 if __name__ == "__main__":
