@@ -69,13 +69,13 @@ pipenv shell
 
 ## Run
 
-### Default sort exp/cost
+### Find parts using default sort (experience score/cost)
 ```bash
 cd pcbuildpartpicker
 ./pcbuildpartpicker.py -f test-parts.csv -b 900
 ```
 
-### Sort by experience_score
+### Find parts usin sort by experience score
 ```bash
 cd pcbuildpartpicker
 ./pcbuildpartpicker.py -f test-parts.csv -b 900 -s 'experience_score' 
@@ -83,4 +83,8 @@ cd pcbuildpartpicker
 
 ### Tests
 
-ToDo - there is a test file, but it is abandoned :-(
+There are a small number of basic unit tests under development. They can be run by
+```bash
+cd pcbuildparpicker
+pytest test_pcbuildpartpicker.py
+``` 
