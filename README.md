@@ -59,6 +59,8 @@ Total Experience Score: 79
     - repeat swapping out parts (keeping the swapped out parts each time)
     - Note: Assumes that there is a strong correlation between price and experience score 
 
+The above is a very crude attempt to find the best possible setup. A better solution would use a more formal algorithm.
+One similar problem that has algorithmic solutions is the [knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem)
 
 ## Setup
 
