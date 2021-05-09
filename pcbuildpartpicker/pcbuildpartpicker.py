@@ -86,10 +86,10 @@ def select_for_budget(original_parts, budget, sort):
         by=["selected", sort], ascending=[False, True], inplace=True, ignore_index=True
     )
     if in_budget(original_parts, budget):
-        return original_parts.loc[original_parts["selected"] is True]
+        return original_parts.loc[original_parts["selected"] == True]
     category_idx = 0
     in_budget_flag = False
-    selected_parts = original_parts.loc[original_parts["selected"] is True]
+    selected_parts = original_parts.loc[original_parts["selected"] == True]
     while not in_budget_flag and category_idx < 6:  # 6 categories
         category = selected_parts.at[category_idx, "category"]
         not_selected_parts = get_alternative_parts(category, original_parts)
@@ -111,7 +111,7 @@ def select_for_budget(original_parts, budget, sort):
             selected_parts = selected_parts.append(row)
             selected_parts.at[not_selected_parts_idx, "selected"] = True
             if in_budget(selected_parts, budget):
-                return selected_parts.loc[selected_parts["selected"] is True]
+                return selected_parts.loc[selected_parts["selected"] == True]
             # print('#' * 40)
         category_idx += 1
     return None
@@ -119,12 +119,12 @@ def select_for_budget(original_parts, budget, sort):
 
 def get_alternative_parts(category, original_parts):
     return original_parts[
-        (original_parts["selected"] is False) & (original_parts["category"] is category)
+        (original_parts["selected"] == False) & (original_parts["category"] == category)
     ].sort_values(by=["experience_score"], ascending=False)
 
 
 def in_budget(parts, budget):
-    selected_parts = parts.loc[parts["selected"] is True]
+    selected_parts = parts.loc[parts["selected"] == True]
     # print_results("Budget Match Attempt", selected_parts)
     cost = selected_parts["cost"].sum()
     if cost > budget:
@@ -143,7 +143,7 @@ def select_parts_based_on(parts, sort_by):
         if row["category"] not in picked_part_category_tracker:
             picked_part_category_tracker.append(row["category"])
             parts.at[index, "selected"] = True
-    return parts.loc[parts["selected"] is True]
+    return parts.loc[parts["selected"] == True]
 
 
 def add_additional_columns(parts):
