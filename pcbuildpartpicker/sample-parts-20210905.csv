@@ -1,19 +1,19 @@
 name,type,category,cost,experience_score
-Nvidia GeForce GTX 1660 Super,Base,Graphics Card,229,21
-Nvidia GeForce RTX 3060 Ti,Mid-Level,Graphics Card,399,23
-Nvidia Geforce RTX 3070,High-End,Graphics Card,499,25
-Intel Core i3-8100 Desktop Processor,Base,CPU,105,18
-Intel Core i3-10100 3.6 GHz Quad-Core Processor,Mid-Level,CPU,120,19
-Intel Core i5-10400F 2.9 GHz 6-Core Processor,High-End,CPU,160,21
-G.Skill Aegis 8 GB (1 x 8 GB) DDR4-3000 CL16 Memory,Base,RAM,55,14
-Corsair Vengeance LPX 8 GB (2 x 4 GB) DDR4-3000 CL16 Memory,Mid-Level,RAM,75,15
-G.Skill Aegis 16 GB (2 x 8 GB) DDR4-3000 CL16 Memory,High-End,RAM,105,17
-Rosewill SRM-01B MicroATX Mini Tower Case,Base,Case,25,6
-Cougar MX330-G Air ATX Mid Tower Case,Mid-Level,Case,50,7
-Metallic Gear Neo Air ATX Mid Tower Case,High-End,Case,65,8
-MSI B460M PRO Micro ATX LGA1200 Motherboard,Base,Motherboard,91,12
+Nvidia GeForce GTX 1660 Super,Base,Graphics Card,229,10
+Nvidia GeForce RTX 3060 Ti,Mid-Level,Graphics Card,399,20
+Nvidia Geforce RTX 3070,High-End,Graphics Card,499,30
+Intel Core i3-8100 Desktop Processor,Base,CPU,105,8
+Intel Core i3-10100 3.6 GHz Quad-Core Processor,Mid-Level,CPU,120,16
+Intel Core i5-10400F 2.9 GHz 6-Core Processor,High-End,CPU,160,24
+G.Skill Aegis 8 GB (1 x 8 GB) DDR4-3000 CL16 Memory,Base,RAM,55,7
+Corsair Vengeance LPX 8 GB (2 x 4 GB) DDR4-3000 CL16 Memory,Mid-Level,RAM,75,14
+G.Skill Aegis 16 GB (2 x 8 GB) DDR4-3000 CL16 Memory,High-End,RAM,105,21
+Rosewill SRM-01B MicroATX Mini Tower Case,Base,Case,25,1
+Cougar MX330-G Air ATX Mid Tower Case,Mid-Level,Case,50,2
+Metallic Gear Neo Air ATX Mid Tower Case,High-End,Case,65,3
+MSI B460M PRO Micro ATX LGA1200 Motherboard,Base,Motherboard,91,7
 MSI Z390-A PRO ATX LGA1151 Motherboard,Mid-Level,Motherboard,125,14
-MSI Z490-A PRO ATX LGA1200 Motherboard,High-End,Motherboard,170,16
-"ADATA Swordfish 250 GB M.2-2280 NVME Solid State Drive +Western Digital Caviar Blue 1 TB 3.5"" 7200RPM Internal Hard Drive",Base,Storage,80,8
-"Crucial MX500 500 GB 2.5"" Solid State Drive + Seagate Barracuda Compute 2 TB 3.5"" 7200RPM Internal Hard Drive",Mid-Level,Storage,110,10
-"Mushkin Enhanced Helix-L 1 TB M.2-2280 NVME Solid State Drive + Seagate Barracuda Compute 2 TB 3.5"" 7200RPM Internal Hard Drive",High-End,Storage,155,13
+MSI Z490-A PRO ATX LGA1200 Motherboard,High-End,Motherboard,170,21
+"ADATA Swordfish 250 GB M.2-2280 NVME Solid State Drive +Western Digital Caviar Blue 1 TB 3.5"" 7200RPM Internal Hard Drive",Base,Storage,80,6
+"Crucial MX500 500 GB 2.5"" Solid State Drive + Seagate Barracuda Compute 2 TB 3.5"" 7200RPM Internal Hard Drive",Mid-Level,Storage,110,12
+"Mushkin Enhanced Helix-L 1 TB M.2-2280 NVME Solid State Drive + Seagate Barracuda Compute 2 TB 3.5"" 7200RPM Internal Hard Drive",High-End,Storage,155,18
